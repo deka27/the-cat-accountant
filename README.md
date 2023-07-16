@@ -51,6 +51,6 @@ P.S. Take care of tailwind by reading the docs at their official website
 
 ## Known Issues
 
-1. If your proxy is not able to connect to backend server, you should delete the package-lock.json and node_modules in client and run `npm i` or `npm install` again. Before doing this, kill all the terminals and reset everything. This issue seems to be because of cache.
+1. If your proxy is not able to connect to backend server, you should delete the `package-lock.json` and `node_modules` in client and run `npm i` or `npm install` again. Before doing this, kill all the terminals and reset everything. This issue seems to be because of cache.
 
 ## Contributions
