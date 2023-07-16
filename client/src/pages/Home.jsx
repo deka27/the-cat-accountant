@@ -139,72 +139,74 @@ const Home = () => {
 
   return (
     <Layout>
-      {loading && <Spinner />}
-      <div className="flex justify-between items-center mt-4">
-        <div>
-          <h6 className="mb-2">Select Frequency</h6>
-          <Select value={frequency} onChange={setFrequency}>
-            <Select.Option value="7">LAST 1 Week</Select.Option>
-            <Select.Option value="30">LAST 1 Month</Select.Option>
-            <Select.Option value="365">LAST 1 Year</Select.Option>
-            <Select.Option value="custom">Custom</Select.Option>
-          </Select>
-          {frequency === "custom" && (
-            <RangePicker
-              value={selectedDate}
-              onChange={setSelectedDate}
+      <div className="mt-20 mr-5 ml-5">
+        {loading && <Spinner />}
+        <div className="flex justify-between items-center mt-4">
+          <div>
+            <h6 className="mb-2">Select Frequency</h6>
+            <Select value={frequency} onChange={setFrequency} className="rounded">
+              <Select.Option value="7">LAST 1 Week</Select.Option>
+              <Select.Option value="30">LAST 1 Month</Select.Option>
+              <Select.Option value="365">LAST 1 Year</Select.Option>
+              <Select.Option value="custom">Custom</Select.Option>
+            </Select>
+            {frequency === "custom" && (
+              <RangePicker
+                value={selectedDate}
+                onChange={setSelectedDate}
+                className="mt-2"
+              />
+            )}
+          </div>
+          <div className="flex items-center ml-4">
+            <h6 className="mb-2">Select Type</h6>
+            <Select value={type} onChange={setType} className="rounded">
+              <Select.Option value="all">ALL</Select.Option>
+              <Select.Option value="income">INCOME</Select.Option>
+              <Select.Option value="expense">EXPENSE</Select.Option>
+            </Select>
+          </div>
+          <div className="flex items-center ml-4">
+            <UnorderedListOutlined
+              className={`text-2xl mx-2 cursor-pointer ${
+                viewData === "table" ? "text-blue-500" : "text-gray-500"
+              }`}
+              onClick={() => setViewData("table")}
             />
+            <AreaChartOutlined
+              className={`text-2xl mx-2 cursor-pointer ${
+                viewData === "analytics" ? "text-blue-500" : "text-gray-500"
+              }`}
+              onClick={() => setViewData("analytics")}
+            />
+          </div>
+          <div>
+            <button
+              className="bg-blue-500 text-white py-1 px-3 rounded-full"
+              onClick={() => setShowModal(true)}
+            >
+              Add New
+            </button>
+          </div>
+        </div>
+        <div className="mt-4">
+          {viewData === "table" ? (
+            <Table columns={columns} dataSource={allTransaction} />
+          ) : (
+            <Analytics allTransaction={allTransaction} />
           )}
         </div>
-        <div className="flex items-center ml-4">
-          <h6 className="mb-2">Select Type</h6>
-          <Select value={type} onChange={setType}>
-            <Select.Option value="all">ALL</Select.Option>
-            <Select.Option value="income">INCOME</Select.Option>
-            <Select.Option value="expense">EXPENSE</Select.Option>
-          </Select>
-        </div>
-        <div className="flex items-center ml-4">
-          <UnorderedListOutlined
-            className={`text-2xl mx-2 cursor-pointer ${
-              viewData === "table" ? "text-blue-500" : "text-gray-500"
-            }`}
-            onClick={() => setViewData("table")}
-          />
-          <AreaChartOutlined
-            className={`text-2xl mx-2 cursor-pointer ${
-              viewData === "analytics" ? "text-blue-500" : "text-gray-500"
-            }`}
-            onClick={() => setViewData("analytics")}
-          />
-        </div>
-        <div>
-          <button
-            className="btn btn-primary"
-            onClick={() => setShowModal(true)}
-          >
-            Add New
-          </button>
-        </div>
-      </div>
-      <div className="mt-4">
-        {viewData === "table" ? (
-          <Table columns={columns} dataSource={allTransaction} />
-        ) : (
-          <Analytics allTransaction={allTransaction} />
-        )}
-      </div>
-      <Modal
-        title={editable ? "Edit Transaction" : "Add Transaction"}
-        open={showModal}
-        onCancel={() => setShowModal(false)}
-        footer={null}
-      >
-        <Form
-          layout="vertical"
-          onFinish={handleSubmit}
-          initialValues={editable}
+        <Modal
+          title={editable ? "Edit Transaction" : "Add Transaction"}
+          open={showModal}
+          onCancel={() => setShowModal(false)}
+          footer={null}
         >
+          <Form
+            layout="vertical"
+            onFinish={handleSubmit}
+            initialValues={editable}
+          >
           <Form.Item label="Amount" name="amount">
             <Input type="text" required />
           </Form.Item>
@@ -237,12 +239,13 @@ const Home = () => {
             <Input type="text" required />
           </Form.Item>
           <div className="flex justify-end">
-            <button type="submit" className="btn btn-primary">
-              SAVE
-            </button>
-          </div>
-        </Form>
-      </Modal>
+              <button type="submit" className="bg-blue-500 text-white py-1 px-3 rounded">
+                SAVE
+              </button>
+            </div>
+          </Form>
+        </Modal>
+      </div>
     </Layout>
   );
 };
