@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
+//Schema Design
+
 const userSchema = new mongoose.Schema({
   firstname: {
     type: String,
@@ -42,7 +44,7 @@ userSchema.statics.signup = async function(firstname, lastname, email, password)
   if (!firstname || !lastname || !email || !password) {
     throw Error("All fields are required");
   }
-  // email validation
+   // email validation
   if (!validator.isEmail(email)) {
     throw Error("Email is invalid");
   }
@@ -71,7 +73,30 @@ userSchema.statics.signup = async function(firstname, lastname, email, password)
   return user;
 };
 
-//returning the user object
+// Static Login Method
+
+userSchema.statics.login = async function(email, password) {
+  if (!email || !password) {
+    throw Error("All fields are required");
+  }
+
+  //first check if the email exists
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw Error("Incorrect email");
+  }
+  //checking the password
+  const match = await bcrypt.compare(password, user.password);
+  
+  if (!match) {
+    throw Error("Incorrect password");
+  }
+  return user;
+
+}
+
+//exporting the user object
 
 const User = mongoose.model("users", userSchema);
 
